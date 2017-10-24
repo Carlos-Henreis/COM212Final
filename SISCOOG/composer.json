@@ -22,7 +22,7 @@
             "database/factories"
         ],
         "psr-4": {
-            "SICOOG\\": "app/"
+            "App\\": "app/"
         }
     },
     "autoload-dev": {
