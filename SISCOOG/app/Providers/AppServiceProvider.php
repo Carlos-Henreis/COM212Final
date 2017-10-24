@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace SISCOOG\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
