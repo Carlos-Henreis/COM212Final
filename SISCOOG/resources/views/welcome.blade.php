@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Siscoog</title>
+        <title>Laravel</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -82,8 +82,10 @@
                     SISCOOG
                 </div>
 
-                <div class="links">
+                <div class="links" style="font-weight: bold">
+                    
                     Sistema de Cooperação em Grupo
+                
                 </div>
             </div>
         </div>

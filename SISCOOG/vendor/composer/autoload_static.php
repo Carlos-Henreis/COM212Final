@@ -4,9 +4,10 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitad9fb4436468434d015771b46d3c99f4
+class ComposerStaticInit941d0d221a24a3c778ea84b65a0cce4f
 {
     public static $files = array (
+        '1d1b89d124cc9cb8219922c9d5569199' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
@@ -1749,8 +1750,6 @@ class ComposerStaticInitad9fb4436468434d015771b46d3c99f4
         'Mockery\\CountValidator\\Exact' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/CountValidator/Exact.php',
         'Mockery\\CountValidator\\Exception' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/CountValidator/Exception.php',
         'Mockery\\Exception' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Exception.php',
-        'Mockery\\Exception\\BadMethodCallException' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Exception/BadMethodCallException.php',
-        'Mockery\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Exception/InvalidArgumentException.php',
         'Mockery\\Exception\\InvalidCountException' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Exception/InvalidCountException.php',
         'Mockery\\Exception\\InvalidOrderException' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Exception/InvalidOrderException.php',
         'Mockery\\Exception\\NoMatchingExpectationException' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Exception/NoMatchingExpectationException.php',
@@ -1758,7 +1757,6 @@ class ComposerStaticInitad9fb4436468434d015771b46d3c99f4
         'Mockery\\Expectation' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Expectation.php',
         'Mockery\\ExpectationDirector' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/ExpectationDirector.php',
         'Mockery\\ExpectationInterface' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/ExpectationInterface.php',
-        'Mockery\\ExpectsHigherOrderMessage' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/ExpectsHigherOrderMessage.php',
         'Mockery\\Generator\\CachingGenerator' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/CachingGenerator.php',
         'Mockery\\Generator\\DefinedTargetClass' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/DefinedTargetClass.php',
         'Mockery\\Generator\\Generator' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/Generator.php',
@@ -1773,43 +1771,35 @@ class ComposerStaticInitad9fb4436468434d015771b46d3c99f4
         'Mockery\\Generator\\StringManipulation\\Pass\\ClassPass' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/StringManipulation/Pass/ClassPass.php',
         'Mockery\\Generator\\StringManipulation\\Pass\\InstanceMockPass' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/StringManipulation/Pass/InstanceMockPass.php',
         'Mockery\\Generator\\StringManipulation\\Pass\\InterfacePass' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/StringManipulation/Pass/InterfacePass.php',
-        'Mockery\\Generator\\StringManipulation\\Pass\\MagicMethodTypeHintsPass' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/StringManipulation/Pass/MagicMethodTypeHintsPass.php',
         'Mockery\\Generator\\StringManipulation\\Pass\\MethodDefinitionPass' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/StringManipulation/Pass/MethodDefinitionPass.php',
         'Mockery\\Generator\\StringManipulation\\Pass\\Pass' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/StringManipulation/Pass/Pass.php',
         'Mockery\\Generator\\StringManipulation\\Pass\\RemoveBuiltinMethodsThatAreFinalPass' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/StringManipulation/Pass/RemoveBuiltinMethodsThatAreFinalPass.php',
-        'Mockery\\Generator\\StringManipulation\\Pass\\RemoveDestructorPass' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/StringManipulation/Pass/RemoveDestructorPass.php',
         'Mockery\\Generator\\StringManipulation\\Pass\\RemoveUnserializeForInternalSerializableClassesPass' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/StringManipulation/Pass/RemoveUnserializeForInternalSerializableClassesPass.php',
-        'Mockery\\Generator\\StringManipulation\\Pass\\TraitPass' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/StringManipulation/Pass/TraitPass.php',
-        'Mockery\\Generator\\TargetClassInterface' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/TargetClassInterface.php',
+        'Mockery\\Generator\\TargetClass' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/TargetClass.php',
         'Mockery\\Generator\\UndefinedTargetClass' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Generator/UndefinedTargetClass.php',
-        'Mockery\\HigherOrderMessage' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/HigherOrderMessage.php',
         'Mockery\\Instantiator' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Instantiator.php',
+        'Mockery\\Loader' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Loader.php',
         'Mockery\\Loader\\EvalLoader' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Loader/EvalLoader.php',
         'Mockery\\Loader\\Loader' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Loader/Loader.php',
         'Mockery\\Loader\\RequireLoader' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Loader/RequireLoader.php',
         'Mockery\\Matcher\\Any' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/Any.php',
-        'Mockery\\Matcher\\AnyArgs' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/AnyArgs.php',
         'Mockery\\Matcher\\AnyOf' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/AnyOf.php',
-        'Mockery\\Matcher\\ArgumentListMatcher' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/ArgumentListMatcher.php',
         'Mockery\\Matcher\\Closure' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/Closure.php',
         'Mockery\\Matcher\\Contains' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/Contains.php',
         'Mockery\\Matcher\\Ducktype' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/Ducktype.php',
         'Mockery\\Matcher\\HasKey' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/HasKey.php',
         'Mockery\\Matcher\\HasValue' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/HasValue.php',
         'Mockery\\Matcher\\MatcherAbstract' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/MatcherAbstract.php',
-        'Mockery\\Matcher\\MultiArgumentClosure' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/MultiArgumentClosure.php',
         'Mockery\\Matcher\\MustBe' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/MustBe.php',
-        'Mockery\\Matcher\\NoArgs' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/NoArgs.php',
         'Mockery\\Matcher\\Not' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/Not.php',
         'Mockery\\Matcher\\NotAnyOf' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/NotAnyOf.php',
-        'Mockery\\Matcher\\PHPUnitConstraint' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/PHPUnitConstraint.php',
-        'Mockery\\Matcher\\Pattern' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/Pattern.php',
         'Mockery\\Matcher\\Subset' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/Subset.php',
         'Mockery\\Matcher\\Type' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Matcher/Type.php',
         'Mockery\\MethodCall' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/MethodCall.php',
         'Mockery\\Mock' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Mock.php',
         'Mockery\\MockInterface' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/MockInterface.php',
         'Mockery\\ReceivedMethodCalls' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/ReceivedMethodCalls.php',
+        'Mockery\\Recorder' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Recorder.php',
         'Mockery\\Undefined' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Undefined.php',
         'Mockery\\VerificationDirector' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/VerificationDirector.php',
         'Mockery\\VerificationExpectation' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/VerificationExpectation.php',
@@ -2827,6 +2817,7 @@ class ComposerStaticInitad9fb4436468434d015771b46d3c99f4
         'SISCOOG\\Http\\Controllers\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisterController.php',
         'SISCOOG\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
         'SISCOOG\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'SISCOOG\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'SISCOOG\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'SISCOOG\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
         'SISCOOG\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
@@ -3567,10 +3558,10 @@ class ComposerStaticInitad9fb4436468434d015771b46d3c99f4
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitad9fb4436468434d015771b46d3c99f4::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitad9fb4436468434d015771b46d3c99f4::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitad9fb4436468434d015771b46d3c99f4::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitad9fb4436468434d015771b46d3c99f4::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit941d0d221a24a3c778ea84b65a0cce4f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit941d0d221a24a3c778ea84b65a0cce4f::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit941d0d221a24a3c778ea84b65a0cce4f::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit941d0d221a24a3c778ea84b65a0cce4f::$classMap;
 
         }, null, ClassLoader::class);
     }
