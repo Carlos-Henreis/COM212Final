@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 25-Out-2017 às 19:32
+-- Generation Time: 25-Out-2017 às 20:46
 -- Versão do servidor: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -45,6 +45,7 @@ CREATE TABLE `users` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ocupation` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -54,8 +55,9 @@ CREATE TABLE `users` (
 -- Extraindo dados da tabela `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Jean Carlos de Oliveira', 'jeancarlosdeoliveira@outlook.com', '$2y$10$bMxGVl8If1KvwW06z6JBJe/7XDyodBTq7TMFviEtYJS5PB3zLx9zy', 'NaqD1WnOZVJEQuSc17N1EutxQXElN76gbu6Y1PtLFVFttLim4IbIXbLZdKaM', '2017-10-25 19:30:29', '2017-10-25 19:30:29');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `ocupation`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Jean Carlos de Oliveira', 'jeancarlosdeoliveira@outlook.com', '$2y$10$bMxGVl8If1KvwW06z6JBJe/7XDyodBTq7TMFviEtYJS5PB3zLx9zy', 'aluno', 'DwXIxTR5oiBQCLGqbxna5ZSGt9SMp5uBbGoKJi9vIPsy5QDn2tQR697sIzxm', '2017-10-25 19:30:29', '2017-10-25 19:30:29'),
+(2, 'Mateus Henrique', 'mateushtoledo@gmail.com', '$2y$10$IPidcEjmvpqJ00NMIx/dx.8W8I.FmefvTdNmVPGVt64Uk9Hjv36uy', 'orientador', 'FrjJTeYCl8WaQZ2fr9QolQPBIZr7imLSZbOOMxp9TLFWlcZaUM9wylEHLFIi', '2017-10-25 20:43:37', '2017-10-25 20:43:37');
 
 --
 -- Indexes for dumped tables
@@ -86,7 +88,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;COMMIT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

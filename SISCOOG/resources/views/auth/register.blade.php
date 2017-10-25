@@ -62,6 +62,18 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="ocupation" class="col-md-4 control-label">Ocupação</label>
+
+                            <div class="col-md-6">
+                                <select id="ocupation" class="form-control" name="ocupation" required>
+                                    <option value="aluno">Aluno</option>
+                                    <option value="professor">Professor</option>
+                                    <option value="orientador">Orientador</option>
+                                  </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
                                     Register
