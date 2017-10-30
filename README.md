@@ -8,8 +8,9 @@ SISCOOG - Implementação do SISCOOG feito em Laravel
 
 ## Mandamentos para este projeto
 
-* ** Antes de começar a programar de um pull do projeto **
-* ** Depois que terminar de push do projeto **
+* ** Nunca dê um commit na master - fique atento a que Release estamos! **
+* ** Antes de começar a programar de um pull do projeto! **
+* ** Depois que terminar de push do projeto! **
 
 ## Como programar
 
