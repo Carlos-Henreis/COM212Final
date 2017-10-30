@@ -3,9 +3,8 @@
 namespace Illuminate\Translation;
 
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Contracts\Translation\Loader;
 
-class FileLoader implements Loader
+class FileLoader implements LoaderInterface
 {
     /**
      * The filesystem instance.
@@ -20,13 +19,6 @@ class FileLoader implements Loader
      * @var string
      */
     protected $path;
-
-    /**
-     * All of the registered paths to JSON translation files.
-     *
-     * @var string
-     */
-    protected $jsonPaths = [];
 
     /**
      * All of the namespace hints.
@@ -58,10 +50,6 @@ class FileLoader implements Loader
      */
     public function load($locale, $group, $namespace = null)
     {
-        if ($group == '*' && $namespace == '*') {
-            return $this->loadJsonPaths($locale);
-        }
-
         if (is_null($namespace) || $namespace == '*') {
             return $this->loadPath($this->path, $locale, $group);
         }
@@ -126,23 +114,6 @@ class FileLoader implements Loader
     }
 
     /**
-     * Load a locale from the given JSON file path.
-     *
-     * @param  string  $locale
-     * @return array
-     */
-    protected function loadJsonPaths($locale)
-    {
-        return collect(array_merge($this->jsonPaths, [$this->path]))
-            ->reduce(function ($output, $path) use ($locale) {
-                return $this->files->exists($full = "{$path}/{$locale}.json")
-                    ? array_merge($output,
-                        json_decode($this->files->get($full), true)
-                    ) : $output;
-            }, []);
-    }
-
-    /**
      * Add a new namespace to the loader.
      *
      * @param  string  $namespace
@@ -152,26 +123,5 @@ class FileLoader implements Loader
     public function addNamespace($namespace, $hint)
     {
         $this->hints[$namespace] = $hint;
-    }
-
-    /**
-     * Add a new JSON path to the loader.
-     *
-     * @param  string  $path
-     * @return void
-     */
-    public function addJsonPath($path)
-    {
-        $this->jsonPaths[] = $path;
-    }
-
-    /**
-     * Get an array of all the registered namespaces.
-     *
-     * @return array
-     */
-    public function namespaces()
-    {
-        return $this->hints;
     }
 }

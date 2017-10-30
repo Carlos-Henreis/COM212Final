@@ -40,6 +40,8 @@ class RouterListener implements EventSubscriberInterface
     private $requestStack;
 
     /**
+     * Constructor.
+     *
      * @param UrlMatcherInterface|RequestMatcherInterface $matcher      The Url or Request matcher
      * @param RequestStack                                $requestStack A RequestStack instance
      * @param RequestContext|null                         $context      The RequestContext (can be null when $matcher implements RequestContextAwareInterface)
@@ -102,11 +104,9 @@ class RouterListener implements EventSubscriberInterface
             }
 
             if (null !== $this->logger) {
-                $this->logger->info('Matched route "{route}".', array(
-                    'route' => isset($parameters['_route']) ? $parameters['_route'] : 'n/a',
+                $this->logger->info(sprintf('Matched route "%s".', isset($parameters['_route']) ? $parameters['_route'] : 'n/a'), array(
                     'route_parameters' => $parameters,
                     'request_uri' => $request->getUri(),
-                    'method' => $request->getMethod(),
                 ));
             }
 

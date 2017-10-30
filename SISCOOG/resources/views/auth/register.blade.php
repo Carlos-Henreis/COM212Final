@@ -6,9 +6,8 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Register</div>
-
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -62,13 +61,32 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="nascimento" class="col-md-4 control-label">Data de Nascimento</label>
+
+                            <div class="col-md-6">
+                                <input id="nascimento" type="date" class="form-control" name="nascimento" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sexo" class="col-md-4 control-label">Sexo</label>
+
+                            <div class="col-md-6">
+                                <select id="sexo" class="form-control" name="sexo" required>
+                                    <option value="aluno">M</option>
+                                    <option value="professor">F</option>
+                                  </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="ocupation" class="col-md-4 control-label">Ocupação</label>
 
                             <div class="col-md-6">
                                 <select id="ocupation" class="form-control" name="ocupation" required>
-                                    <option value="aluno">Aluno</option>
+                                    <option value="aluno">Estudante</option>
                                     <option value="professor">Professor</option>
-                                    <option value="orientador">Orientador</option>
+                                    <option value="orientador">outro</option>
                                   </select>
                             </div>
                         </div>

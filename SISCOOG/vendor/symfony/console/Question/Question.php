@@ -31,6 +31,8 @@ class Question
     private $normalizer;
 
     /**
+     * Constructor.
+     *
      * @param string $question The question to ask to the user
      * @param mixed  $default  The default answer to return if the user enters nothing
      */
@@ -75,7 +77,7 @@ class Question
      *
      * @param bool $hidden
      *
-     * @return $this
+     * @return Question The current instance
      *
      * @throws LogicException In case the autocompleter is also used
      */
@@ -105,7 +107,7 @@ class Question
      *
      * @param bool $fallback
      *
-     * @return $this
+     * @return Question The current instance
      */
     public function setHiddenFallback($fallback)
     {
@@ -129,7 +131,7 @@ class Question
      *
      * @param null|array|\Traversable $values
      *
-     * @return $this
+     * @return Question The current instance
      *
      * @throws InvalidArgumentException
      * @throws LogicException
@@ -160,7 +162,7 @@ class Question
      *
      * @param null|callable $validator
      *
-     * @return $this
+     * @return Question The current instance
      */
     public function setValidator(callable $validator = null)
     {
@@ -186,9 +188,9 @@ class Question
      *
      * @param null|int $attempts
      *
-     * @return $this
+     * @return Question The current instance
      *
-     * @throws InvalidArgumentException in case the number of attempts is invalid
+     * @throws InvalidArgumentException In case the number of attempts is invalid.
      */
     public function setMaxAttempts($attempts)
     {
@@ -220,7 +222,7 @@ class Question
      *
      * @param callable $normalizer
      *
-     * @return $this
+     * @return Question The current instance
      */
     public function setNormalizer(callable $normalizer)
     {

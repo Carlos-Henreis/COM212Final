@@ -39,6 +39,8 @@ class AcceptHeaderItem
     private $attributes = array();
 
     /**
+     * Constructor.
+     *
      * @param string $value
      * @param array  $attributes
      */
@@ -55,7 +57,7 @@ class AcceptHeaderItem
      *
      * @param string $itemValue
      *
-     * @return self
+     * @return AcceptHeaderItem
      */
     public static function fromString($itemValue)
     {
@@ -65,7 +67,7 @@ class AcceptHeaderItem
 
         $lastNullAttribute = null;
         foreach ($bits as $bit) {
-            if (($start = substr($bit, 0, 1)) === ($end = substr($bit, -1)) && ('"' === $start || '\'' === $start)) {
+            if (($start = substr($bit, 0, 1)) === ($end = substr($bit, -1)) && ($start === '"' || $start === '\'')) {
                 $attributes[$lastNullAttribute] = substr($bit, 1, -1);
             } elseif ('=' === $end) {
                 $lastNullAttribute = $bit = substr($bit, 0, -1);
@@ -76,7 +78,7 @@ class AcceptHeaderItem
             }
         }
 
-        return new self(($start = substr($value, 0, 1)) === ($end = substr($value, -1)) && ('"' === $start || '\'' === $start) ? substr($value, 1, -1) : $value, $attributes);
+        return new self(($start = substr($value, 0, 1)) === ($end = substr($value, -1)) && ($start === '"' || $start === '\'') ? substr($value, 1, -1) : $value, $attributes);
     }
 
     /**
@@ -101,7 +103,7 @@ class AcceptHeaderItem
      *
      * @param string $value
      *
-     * @return $this
+     * @return AcceptHeaderItem
      */
     public function setValue($value)
     {
@@ -125,7 +127,7 @@ class AcceptHeaderItem
      *
      * @param float $quality
      *
-     * @return $this
+     * @return AcceptHeaderItem
      */
     public function setQuality($quality)
     {
@@ -149,7 +151,7 @@ class AcceptHeaderItem
      *
      * @param int $index
      *
-     * @return $this
+     * @return AcceptHeaderItem
      */
     public function setIndex($index)
     {
@@ -209,7 +211,7 @@ class AcceptHeaderItem
      * @param string $name
      * @param string $value
      *
-     * @return $this
+     * @return AcceptHeaderItem
      */
     public function setAttribute($name, $value)
     {

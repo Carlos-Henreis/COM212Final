@@ -88,15 +88,15 @@ class AuthManager implements FactoryContract
 
         if (isset($this->customCreators[$config['driver']])) {
             return $this->callCustomCreator($name, $config);
+        } else {
+            $driverMethod = 'create'.ucfirst($config['driver']).'Driver';
+
+            if (method_exists($this, $driverMethod)) {
+                return $this->{$driverMethod}($name, $config);
+            } else {
+                throw new InvalidArgumentException("Auth guard driver [{$name}] is not defined.");
+            }
         }
-
-        $driverMethod = 'create'.ucfirst($config['driver']).'Driver';
-
-        if (method_exists($this, $driverMethod)) {
-            return $this->{$driverMethod}($name, $config);
-        }
-
-        throw new InvalidArgumentException("Auth guard driver [{$name}] is not defined.");
     }
 
     /**
@@ -120,7 +120,7 @@ class AuthManager implements FactoryContract
      */
     public function createSessionDriver($name, $config)
     {
-        $provider = $this->createUserProvider($config['provider'] ?? null);
+        $provider = $this->createUserProvider($config['provider']);
 
         $guard = new SessionGuard($name, $provider, $this->app['session.store']);
 
@@ -155,7 +155,7 @@ class AuthManager implements FactoryContract
         // that takes an API token field from the request and matches it to the
         // user in the database or another persistence layer where users are.
         $guard = new TokenGuard(
-            $this->createUserProvider($config['provider'] ?? null),
+            $this->createUserProvider($config['provider']),
             $this->app['request']
         );
 
@@ -193,8 +193,6 @@ class AuthManager implements FactoryContract
      */
     public function shouldUse($name)
     {
-        $name = $name ?: $this->getDefaultDriver();
-
         $this->setDefaultDriver($name);
 
         $this->userResolver = function ($name = null) {
@@ -223,7 +221,7 @@ class AuthManager implements FactoryContract
     public function viaRequest($driver, callable $callback)
     {
         return $this->extend($driver, function () use ($callback) {
-            $guard = new RequestGuard($callback, $this->app['request'], $this->createUserProvider());
+            $guard = new RequestGuard($callback, $this->app['request']);
 
             $this->app->refresh('request', $guard, 'setRequest');
 
@@ -291,6 +289,6 @@ class AuthManager implements FactoryContract
      */
     public function __call($method, $parameters)
     {
-        return $this->guard()->{$method}(...$parameters);
+        return call_user_func_array([$this->guard(), $method], $parameters);
     }
 }

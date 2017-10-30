@@ -68,12 +68,12 @@ class DatabaseUserProvider implements UserProvider
      */
     public function retrieveByToken($identifier, $token)
     {
-        $user = $this->getGenericUser(
-            $this->conn->table($this->table)->find($identifier)
-        );
+        $user = $this->conn->table($this->table)
+            ->where('id', $identifier)
+            ->where('remember_token', $token)
+            ->first();
 
-        return $user && $user->getRememberToken() && hash_equals($user->getRememberToken(), $token)
-                    ? $user : null;
+        return $this->getGenericUser($user);
     }
 
     /**
@@ -86,8 +86,8 @@ class DatabaseUserProvider implements UserProvider
     public function updateRememberToken(UserContract $user, $token)
     {
         $this->conn->table($this->table)
-                ->where($user->getAuthIdentifierName(), $user->getAuthIdentifier())
-                ->update([$user->getRememberTokenName() => $token]);
+                ->where('id', $user->getAuthIdentifier())
+                ->update(['remember_token' => $token]);
     }
 
     /**
@@ -125,7 +125,7 @@ class DatabaseUserProvider implements UserProvider
      */
     protected function getGenericUser($user)
     {
-        if (! is_null($user)) {
+        if ($user !== null) {
             return new GenericUser((array) $user);
         }
     }
@@ -139,8 +139,8 @@ class DatabaseUserProvider implements UserProvider
      */
     public function validateCredentials(UserContract $user, array $credentials)
     {
-        return $this->hasher->check(
-            $credentials['password'], $user->getAuthPassword()
-        );
+        $plain = $credentials['password'];
+
+        return $this->hasher->check($plain, $user->getAuthPassword());
     }
 }
