@@ -102,16 +102,18 @@ class AuthController extends Controller
      * @param  array  $data
      * @return User
      */
-    protected function create(array $data)
+    protected function register(Request $request)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'nascimento' => $data['nascimento'],
-            'sexo' => $data['sexo'],
-            'ocupation'=> $data['ocupation'],
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'nascimento' => $request->nascimento,
+            'sexo' => $request->sexo,
+            'ocupation'=> $request->ocupation,
         ]);
+        $_POST['primeiro'] = 'sim';
+        return redirect ('/home');;
     }
 
 

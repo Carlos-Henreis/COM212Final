@@ -59,6 +59,7 @@
 
             <div class="col-md-2">
                 <select class="form-control" name="ocupation">
+
                     @if ($user->ocupation == "Estudante")
                         <option  selected="selected" value="Estudante">Estudante</option>
                     @else
@@ -74,12 +75,12 @@
                     @if ($user->ocupation == "outro")
                         <option  selected="selected" value="outro">outro</option>
                     @else
-                        <option value="aluno">outro</option>
+                        <option value="outro">outro</option>
                     @endif
                 </select>                
-                @if ($errors->has('sexo'))
+                @if ($errors->has('ocupation'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('sexo') }}</strong>
+                        <strong>{{ $errors->first('ocupation') }}</strong>
                     </span>
                 @endif
             </div>

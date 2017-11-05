@@ -73,8 +73,8 @@
 
                             <div class="col-md-6">
                                 <select id="sexo" class="form-control" name="sexo" required>
-                                    <option value="aluno">M</option>
-                                    <option value="professor">F</option>
+                                    <option value="M">M</option>
+                                    <option value="F">F</option>
                                   </select>
                             </div>
                         </div>
@@ -84,9 +84,9 @@
 
                             <div class="col-md-6">
                                 <select id="ocupation" class="form-control" name="ocupation" required>
-                                    <option value="aluno">Estudante</option>
-                                    <option value="professor">Professor</option>
-                                    <option value="orientador">outro</option>
+                                    <option value="Estudante">Estudante</option>
+                                    <option value="Professor">Professor</option>
+                                    <option value="outro">outro</option>
                                   </select>
                             </div>
                         </div>

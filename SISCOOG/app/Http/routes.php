@@ -11,14 +11,43 @@
 |
 */
 
+
+Route::get('/upload', 'TesteController@upload');
+Route::post('/upload', 'TesteController@move');
+
 Route::get('/', function () {
     return view('welcome');
 });
 
+
+
+
 Route::group(['middleware' => ['web']], function(){
-	Route::auth();
-	Route::get('/home', 'HomeController@index');
+    Route::auth();
+    Route::get('/home', 'HomeController@index');
+
+    Route::post('/home/group/create', 'HomeController@CreateGroups');
+    Route::get('/home/group/{id}', 'HomeController@ShowGroup');
+    Route::post('/home/group/updateNome', 'HomeController@updateNome');
+    Route::post ('/home/group/delete', 'HomeController@removeGrupo');
+
+    Route::get('home/group/{id}/Participantes', 'HomeController@ShowMember');
+
+    Route::post('/home/group/insertmember','HomeController@insertMember');
+    Route::get('select2-autocomplete-ajax', 'HomeController@dataAjax');
+
+    Route::post ('/home/group/{id}/Participantes/remove', 'HomeController@removeMember');
+
+
+    Route::get('/home/group/insertpost', 'HomeController@ShowFormPost');
+    Route::post('/home/group/insertpost', 'HomeController@insertPost');
+    Route::post('/home/group/removepost', 'HomeController@removePost');
+
+
+    
 });
+
+
 
 Route::group(['middleware' => ['web']], function () {
     //Login Routes...
