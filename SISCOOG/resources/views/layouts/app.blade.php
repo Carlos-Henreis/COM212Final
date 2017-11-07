@@ -112,7 +112,9 @@
  border-radius:4px;
  }
 
-
+.navbar-brand img{
+    height: 100%;
+}
     </style>
 </head>
 <body id="app-layout">
@@ -130,7 +132,7 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Laravel
+                    <img src="imgs/logo.png">
                 </a>
             </div>
 
