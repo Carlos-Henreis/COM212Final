@@ -7,143 +7,62 @@
 
     <title>SISCOOG</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
-  <script type="text/javascript">
+    <script type="text/javascript">
+        $('.itemName').select2({
+          placeholder: 'Select an item',
+          ajax: {
+            url: '/select2-autocomplete-ajax',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+              return {
+                results:  $.map(data, function (item) {
+                      return {
+                          text: item.email,
+                          id: item.id
+                      }
+                  })
+              };
+            },
+            cache: true
+          }
+        });
 
-      $('.itemName').select2({
-        placeholder: 'Select an item',
-        ajax: {
-          url: '/select2-autocomplete-ajax',
-          dataType: 'json',
-          delay: 250,
-          processResults: function (data) {
-            return {
-              results:  $.map(data, function (item) {
-                    return {
-                        text: item.email,
-                        id: item.id
-                    }
-                })
-            };
-          },
-          cache: true
-        }
-      });
+    </script>
 
-</script>
-
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
+    <link href="{{ url('/') }}/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
 
-    <style>
-        body {
-            font-family: 'Lato';
-        }
-
-        .fa-btn {
-            margin-right: 6px;
-        }
-
-        .dropdown {
-    display:inline-block;
-    margin-left:20px;
-    padding:10px;
-  }
-
-
-.glyphicon-bell {
-   
-    font-size:1.5rem;
-  }
-
-.notifications {
-   min-width:420px; 
-  }
-  
-  .notifications-wrapper {
-     overflow:auto;
-      max-height:250px;
-    }
-    
- .menu-title {
-     color:#ff7788;
-     font-size:1.5rem;
-      display:inline-block;
-      }
- 
-.glyphicon-circle-arrow-right {
-      margin-left:10px;     
-   }
-  
-   
- .notification-heading, .notification-footer  {
-    padding:2px 10px;
-       }
-      
-        
-.dropdown-menu.divider {
-  margin:5px 0;          
-  }
-
-.item-title {
-  
- font-size:1.3rem;
- color:#000;
-    
-}
-
-.notifications a.content {
- text-decoration:none;
- background:#ccc;
-
- }
-    
-.notification-item {
- padding:10px;
- margin:5px;
- background:#ccc;
- border-radius:4px;
- }
-
-.navbar-brand img{
-    height: 100%;
-}
-    </style>
+    <link href="{{ url('/') }}/css/style.css" rel="stylesheet">
 </head>
 <body id="app-layout">
-    <nav class="navbar navbar-default navbar-static-top">
+    <nav class="navbar navbar-custom navbar-static-top">
         <div class="container">
-            <div class="navbar-header">
+            <div class="navbar-header page-scroll">
 
                 <!-- Collapsed Hamburger -->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                    <span class="sr-only">Toggle Navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars"></i>
+                </button> 
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="imgs/logo.png">
+                    <img src="{{ url('/') }}/img/logo.png">
                 </a>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Home</a></li>
-                </ul>
-
-                <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ url('/home') }}">Home</a></li>
                     <!-- Authentication Links -->
                     @if(Auth::guard('admin')->user())
                         <li class="dropdown">
