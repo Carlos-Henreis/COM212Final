@@ -13,6 +13,12 @@ body {
     line-height: 1.6em;
 }
 
+a:hover, a:visited, a:link, a:active
+{
+  text-decoration: none;
+  color: #000;
+}
+
 .fa-btn {
   margin-right: 6px;
 }
@@ -234,4 +240,41 @@ Navigation
   }
   .navbar-header i{
     color: #666;
+  }
+
+  .lg{
+    margin-top: 15%;
+  }
+
+  .lgbtn{
+    margin: 1px solid black;
+    width: 30%;
+    height: 35px;
+    background: #fff;
+    border: 1px solid #fff;
+    cursor: pointer;
+    border-radius: 2px;
+    color: #97825e;
+    font-size: 16px;
+    border: 1px solid #97825e;
+}
+
+.lgimgdiv{
+    text-align: center;
+}
+
+.lgimg{
+  width: 100%;
+  padding: 10px;
+  padding-top: 40px;
+  padding-bottom: 20px;
+}
+
+input {
+    padding: 20px !important;
+    border-top-left-radius: 3px !important;
+    border-top-right-radius: 3px !important;
+    border-bottom-left-radius: 3px !important;
+    border-bottom-right-radius: 3px !important;
+    box-sizing: border-box !important; 
   }
