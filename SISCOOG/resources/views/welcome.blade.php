@@ -37,8 +37,7 @@
             </div>
         </div>      
     </section>
-    
-    <!-- /Section: intro -->
+     <!-- /Section: intro -->
     <div class="divider-short"></div>
     
     <section id="content1" class="home-section">
@@ -85,8 +84,7 @@
 
     </section>
     <!-- /Section: content -->
-    
-    <div class="divider-short"></div>
+     <div class="divider-short"></div>
     
     <section id="content2" class="home-section">
     
@@ -173,44 +171,40 @@
     
 
         <div class="sub-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6 col-md-6 col-lg-6">
-                    <ul class="social">
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                        <li><a href="#"><i class="fa fa-youtube"></i></a></li>
-                    </ul>
-                
-                    <div class="wow fadeInLeft" data-wow-delay="0.1s">
-                    <div class="text-left">
-                    <p>&copy;Copyright 2017 - SISCOOG - UNIFEI. Todos os direitos reservados.</p>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <ul class="social">
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                            <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                        </ul>
+                    
+                        <div class="wow fadeInLeft" data-wow-delay="0.1s">
+                        <div class="text-left">
+                        <p>&copy;Copyright 2017 - SISCOOG - UNIFEI. Todos os direitos reservados.</p>
+                        </div>
+                        </div>
                     </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6">
+                        <div class="wow fadeInRight" data-wow-delay="0.1s">
+                        <div class="text-right margintop-30">
+                            <p>Designed by Antônio, Carlos, Daniel, Jean e Mateus</p>
+                            <!-- 
+                                All links in the footer should remain intact. 
+                                Licenseing information is available at: http://bootstraptaste.com/license/
+                                You can buy this theme without footer links online at: http://bootstraptaste.com/buy/?theme=Appland
+                            -->
+                        </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-6">
-                    <div class="wow fadeInRight" data-wow-delay="0.1s">
-                    <div class="text-right margintop-30">
-                        <p>Designed by Antônio, Carlos, Daniel, Jean e Mateus</p>
-                        <!-- 
-                            All links in the footer should remain intact. 
-                            Licenseing information is available at: http://bootstraptaste.com/license/
-                            You can buy this theme without footer links online at: http://bootstraptaste.com/buy/?theme=Appland
-                        -->
-                    </div>
-                    </div>
-                </div>
-            </div>  
-        </div>
+                </div>  
+            </div>
         </div>
     </footer>
-
-</div>
-<a href="#app-layout" class="scrollup"><i class="fa fa-angle-up active"></i></a>
-
-    <!-- Core JavaScript Files --> 
-    <script src="{{ url('/') }}/template/js/bootstrap.min.js"></script>
+    <a href="#app-layout" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+        <!-- Core JavaScript Files --> 
     <script src="{{ url('/') }}/template/js/jquery.easing.min.js"></script>
     <script src="{{ url('/') }}/template/js/wow.min.js"></script>
     <script src="{{ url('/') }}/template/js/jquery.scrollTo.js"></script>
