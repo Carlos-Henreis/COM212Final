@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2 lgform">
             <div class="col-md-5 lgimgdiv">
-                <a chref="{{ url('/') }}">
+                <a href="{{ url('/') }}">
                     <img class="lgimg" src="{{ url('/') }}/img/logouser.png">
                 </a>
             </div>
