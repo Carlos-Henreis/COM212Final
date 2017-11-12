@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Grupo;
 use App\Participa;
+use App\Tarefa;
 Use input;
 
 class HomeController extends Controller
@@ -79,7 +80,14 @@ class HomeController extends Controller
                           ->join('participas','participas.idUsuario','=','users.id')   
                           ->where('participas.idGrupo', '=',$idGrupo)                                    
                           ->get();
-        return view('grupo.home', compact('grupo', 'participantes'));
+         $posts = DB::table('tarefas')
+                          ->join('users','tarefas.idUsuario','=','users.id')   
+                          ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                          ->get();
+        $porcentagemTotal = DB::table('tarefas') 
+                          ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                          ->avg('porcentagem');
+        return view('grupo.home', compact('grupo', 'participantes', 'posts', 'porcentagemTotal'));
     }
 
     public function ShowMember ($idGrupo) {
@@ -88,6 +96,7 @@ class HomeController extends Controller
                           ->join('participas','participas.idUsuario','=','users.id')   
                           ->where('participas.idGrupo', '=',$idGrupo)                                    
                           ->get();
+       
         return view ('grupo.participantes', compact('participantes', 'grupo'));
     }
 
@@ -175,6 +184,12 @@ class HomeController extends Controller
                                 ['idUsuario', '=', $request->idParicipante]
                             ])                                    
                           ->delete();
+        $Participas = DB::table('tarefas')
+                          ->where([
+                                ['idGrupo', '=',$request->idGrupo],
+                                ['idUsuario', '=', $request->idParicipante]
+                            ])                                    
+                          ->delete();
         $okDelete = true;
         $grupo = Grupo::find($request->idGrupo);
         $participantes = DB::table('users')
@@ -184,11 +199,11 @@ class HomeController extends Controller
         return view ('grupo.participantes', compact('okDelete', 'e', 'grupo', 'participantes'));
     }
 
-    public function ShowFormPost () {
 
-    }
 
     public function insertPost (Request $request) {
+      $inputP = array('idGrupo' => $request->idGroup, 'mensagem' => $request->mensagem, 'idUsuario' => $request->idUser, 'porcentagem' => 0,);
+      return Tarefa::create($inputP);;
 
     }
 

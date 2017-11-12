@@ -35,13 +35,15 @@ Route::group(['middleware' => ['web']], function(){
 
     Route::post('/home/group/insertmember','HomeController@insertMember');
     Route::get('select2-autocomplete-ajax', 'HomeController@dataAjax');
-
     Route::post ('/home/group/{id}/Participantes/remove', 'HomeController@removeMember');
 
 
-    Route::get('/home/group/insertpost', 'HomeController@ShowFormPost');
-    Route::post('/home/group/insertpost', 'HomeController@insertPost');
-    Route::post('/home/group/removepost', 'HomeController@removePost');
+    Route::post('/home/group/{id}/tarefas/insert', 'HomeController@insertPost');
+    Route::post('/home/group/{id}/removepost', 'HomeController@removePost');
+
+    Route::post('/home/group/{id}/upload', ['as' => 'files.upload', 'uses' => 'HomeController@fileUpload']);
+    Route::get('/home/group/{id}/download/{fileId}', ['as' => 'files.download', 'uses' => 'HomeController@fileDownload']);
+    Route::get('/home/group/{id}/remover/{fileId}', ['as' => 'files.destroy', 'uses' => 'HomeController@fileDestroy']);
 
 
     
