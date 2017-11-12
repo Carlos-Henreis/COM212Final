@@ -39,7 +39,8 @@ Route::group(['middleware' => ['web']], function(){
 
 
     Route::post('/home/group/{id}/tarefas/insert', 'HomeController@insertPost');
-    Route::post('/home/group/{id}/removepost', 'HomeController@removePost');
+    Route::post('/home/group/{id}/tarefas/update', 'HomeController@updatePost');
+    Route::post('/home/group/{id}/tarefas/delete', 'HomeController@removePost');
 
     Route::post('/home/group/{id}/upload', ['as' => 'files.upload', 'uses' => 'HomeController@fileUpload']);
     Route::get('/home/group/{id}/download/{fileId}', ['as' => 'files.download', 'uses' => 'HomeController@fileDownload']);

@@ -18,6 +18,7 @@ class CreateTarefasTable extends Migration
             $table->text('mensagem');
             $table->integer('idUsuario')->unsigned();
             $table->float('porcentagem');
+            $table->string('titulo');
             $table->foreign('idGrupo')->references('id')->on('grupos')->onDelete('cascade');
             $table->foreign('idUsuario')->references('id')->on('users');
             $table->timestamps();

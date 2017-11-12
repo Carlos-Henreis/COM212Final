@@ -80,8 +80,8 @@ class HomeController extends Controller
                           ->join('participas','participas.idUsuario','=','users.id')   
                           ->where('participas.idGrupo', '=',$idGrupo)                                    
                           ->get();
-         $posts = DB::table('tarefas')
-                          ->join('users','tarefas.idUsuario','=','users.id')   
+         $posts = DB::table('users')
+                          ->join('tarefas','tarefas.idUsuario','=','users.id')   
                           ->where('tarefas.idGrupo', '=',$idGrupo)                                    
                           ->get();
         $porcentagemTotal = DB::table('tarefas') 
@@ -105,12 +105,21 @@ class HomeController extends Controller
         try {
             $t = Grupo::find($request->idGroup)->update(['name' => $request->name]);
             $grupo = Grupo::find($request->idGroup);
+            $idGrupo = $request->idGroup;
             $participantes = DB::table('users')
                           ->join('participas','participas.idUsuario','=','users.id')   
                           ->where('participas.idGrupo', '=',$request->idGroup)                                    
                           ->get();
             $okNome = true;
-            return view ('grupo.home', compact('okNome', 'grupo', 'participantes'));
+
+            $posts = DB::table('users')
+                          ->join('tarefas','tarefas.idUsuario','=','users.id')   
+                          ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                          ->get();
+            $porcentagemTotal = DB::table('tarefas') 
+                              ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                              ->avg('porcentagem');
+            return view('grupo.home', compact('okNome', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
         } catch (\Illuminate\Database\QueryException $e) {
             $okNome = false;
             $grupo = Grupo::find($request->idGrupo);
@@ -118,7 +127,14 @@ class HomeController extends Controller
                           ->join('participas','participas.idUsuario','=','users.id')   
                           ->where('participas.idGrupo', '=',$request->idGroup)                                    
                           ->get();
-            return view ('grupo.home', compact('okNome', 'e', 'grupo', 'participantes'));
+            $posts = DB::table('users')
+                          ->join('tarefas','tarefas.idUsuario','=','users.id')   
+                          ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                          ->get();
+            $porcentagemTotal = DB::table('tarefas') 
+                              ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                              ->avg('porcentagem');
+            return view('grupo.home', compact('okNome', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
         }
         
     }
@@ -190,7 +206,7 @@ class HomeController extends Controller
                                 ['idUsuario', '=', $request->idParicipante]
                             ])                                    
                           ->delete();
-        $okDelete = true;
+        $okDelete = true; 
         $grupo = Grupo::find($request->idGrupo);
         $participantes = DB::table('users')
                       ->join('participas','participas.idUsuario','=','users.id')   
@@ -202,13 +218,70 @@ class HomeController extends Controller
 
 
     public function insertPost (Request $request) {
-      $inputP = array('idGrupo' => $request->idGroup, 'mensagem' => $request->mensagem, 'idUsuario' => $request->idUser, 'porcentagem' => 0,);
-      return Tarefa::create($inputP);;
+      
+      $inputP = array('idGrupo' => $request->idGroup, 'mensagem' => $request->mensagem, 'idUsuario' => $request->idUser, 'porcentagem' => 0, 'titulo' => $request->titulo);
+      Tarefa::create($inputP);
+      $idGrupo = $request->idGroup;
+      $grupo = Grupo::find($idGrupo);
+      $participantes = DB::table('users')
+                        ->join('participas','participas.idUsuario','=','users.id')   
+                        ->where('participas.idGrupo', '=',$idGrupo)                                    
+                        ->get();
+       $posts = DB::table('users')
+                        ->join('tarefas','tarefas.idUsuario','=','users.id')   
+                        ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                        ->get();
+      $porcentagemTotal = DB::table('tarefas') 
+                        ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                        ->avg('porcentagem');
+      $okinsertPost = true;
+      return view('grupo.home', compact('grupo', 'participantes', 'posts', 'porcentagemTotal', 'okinsertPost'));
 
+
+
+      self::ShowGroup($request->idGroup);
     }
 
-    public function RemovePost (Request $request) {
 
+    public function updatePost(Request $request) {
+      $t = Tarefa::find($request->idTarefa)->update(['titulo' => $request->titulo, 'mensagem' => $request->mensagem, 'porcentagem' => $request->porcentagem]);
+      $idGrupo = $request->idGroup; 
+      $grupo = Grupo::find($idGrupo);
+        $participantes = DB::table('users')
+                          ->join('participas','participas.idUsuario','=','users.id')   
+                          ->where('participas.idGrupo', '=',$idGrupo)                                    
+                          ->get();
+         $posts = DB::table('users')
+                          ->join('tarefas','tarefas.idUsuario','=','users.id')   
+                          ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                          ->get();
+        $porcentagemTotal = DB::table('tarefas') 
+                          ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                          ->avg('porcentagem');
+        $okTarefaUp = true;
+        return view('grupo.home', compact('okTarefaUp', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
+        
+    }
+
+
+    public function removePost (Request $request) {
+      $tarefa = Tarefa::find($request->idPost);
+      $tarefa->delete();
+      $idGrupo = $request->idGrupo;
+      $grupo = Grupo::find($idGrupo);
+      $participantes = DB::table('users')
+                          ->join('participas','participas.idUsuario','=','users.id')   
+                          ->where('participas.idGrupo', '=',$idGrupo)                                    
+                          ->get();
+         $posts = DB::table('users')
+                          ->join('tarefas','tarefas.idUsuario','=','users.id')   
+                          ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                          ->get();
+        $porcentagemTotal = DB::table('tarefas') 
+                          ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                          ->avg('porcentagem');
+        $okTarefaDel = true;
+        return view('grupo.home', compact('okTarefaDel', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
     }
 }
  

@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">Grupo</div>
+                <div class="panel-heading">Grupo - <?php echo $grupo->name;?></div>
                 <div class="panel-body">
                 	<span>
                 		<p>Porcentagem das atividades concluidas
@@ -20,11 +20,6 @@
 					{!! Session::get('success') !!}
 				</div>
 		    @endif
-
-		    <div class="alert alert-success hide" id="upload-success">
-				Upload realizado com sucesso!
-			</div>
-                	</span>
                      @if(isset($okNome))
                         @if ($okNome)
                             <div class="alert alert-success alert-dismissable">
@@ -40,6 +35,34 @@
                         @endif
                         
                     @endif
+                    @if(isset ($okinsertPost))
+                    	<div class="alert alert-success alert-dismissable">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                            <strong>Success!</strong> Nova Tarefa adicionada! <br> Você pode editá-la futuramente.
+                        </div>
+
+                    @endif
+
+                     @if(isset ($okTarefaUp))
+                    	<div class="alert alert-success alert-dismissable">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                            <strong>Success!</strong> Dados da Tarefa Atualizado com sucesso.
+                        </div>
+
+
+                      
+
+                    @endif
+
+                    @if(isset ($okTarefaDel))
+                    	<div class="alert alert-info alert-dismissable">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                            <strong>Atenção!</strong> Você removeu uma atividade deste grupo <span class="glyphicon glyphicon-warning-sign"></span>
+                        </div>
+
+
+                    @endif
+
 	                <div class="col-md-3 col-md-offset-0">	
 	                	<div class="panel panel-default">
 	                		
@@ -84,34 +107,127 @@
 			                	</div>
 			                	<table class="table table-hover">
                                     <tbody> 
+                                    	
                                         @foreach ($posts as $post)
                                             <tr>
-                                            <td><?php echo '('.mb_strimwidth($post->created_at, 0, 10).') <strong>'.$post->name.'</strong> postou uma nova tarefa:<br>'; ?>{{ mb_strimwidth($post->mensagem, 0, 145, "...") }} <br>
+                                            <td><?php
+                                    		  	echo '('.mb_strimwidth($post->created_at, 0, 10).') <strong>'.$post->name.'</strong> postou uma nova tarefa:<p>Titulo: <strong>'.$post->titulo.'</strong></p><p><strong>Descrição:</strong></p><p>'.$post->mensagem;?></p><br>
                                             	<?php 
-                                            		echo '<span>
+
+                                            		echo '
+                                            			  <div class="pull-right">
+															Última atualização<span class="glyphicon glyphicon-refresh"></span>: '.$post->updated_at.'
+															</div><br<br><br>
+                                            			  <span>
 									                		<div id="progress" class="progress">
 									                			
-														        <div class="progress-bar progress-bar-success" aria-valuenow="'.$post->porcentagem.'" aria-valuemin="0" aria-valuemax="100" style="width:'.$post->porcentagem.'%">'.$post->porcentagem.'% da atividades concluida </div>
+														        <div class="progress-bar progress-bar-success" aria-valuenow="'.$post->porcentagem.'" aria-valuemin="0" aria-valuemax="100" style="width:'.$post->porcentagem.'%">'.$post->porcentagem.'% da atividade concluida </div>
 														    </div>
 														</span>';
                                             	?>
                                             </td>
                                             <td>
-                                            	 @if ($post->email == Auth::guard('user')->user()->email)
-		                                              <form>
-		                                                <div class='form-group'>
-		                                                  <div>
-		                                                      <button class="btn-sm btn-primary">
-		                                                          Atualizar
-		                                                        </button>
-		                                                      <button type="button" class="btn-sm btn-danger">
-		                                                          Remover
-		                                                        </button>
-		                                                  </div>
-		                                                </div>
-		                                              </form>
-		                                         @else
-		                                             
+                                        	 	@if ($post->email == Auth::guard('user')->user()->email)
+
+													<a href="#" data-toggle="tooltip" data-placement="bottom" title="Atualizar post">
+														<button type="button" class="btn btn-success" data-toggle="modal" data-target="#ModalUpdatePost<?php echo $post->id; ?>">
+													      <span class="glyphicon glyphicon-pencil"></span> Atualizar
+													    </button>
+													</a>
+													<p></p>
+													<a href="#" data-toggle="tooltip" data-placement="bottom" title="Remover post">
+														<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalDeletePost<?php echo $post->id; ?>">
+													      <span class="glyphicon glyphicon-trash"></span> Remover
+													    </button>
+													</a>
+		                                         	
+												<div class="modal fade" id="ModalUpdatePost<?php echo $post->id; ?>" role="dialog">
+												    <div class="modal-dialog">
+												    
+														<!-- Modal content-->
+														<div class="modal-content">
+															<div class="modal-header">
+																<button type="button" class="close" data-dismiss="modal">&times;</button>
+																<h4 class="modal-title">Atualizar <?php echo $post->id; ?></h4>
+															</div>
+															<div class="modal-body">
+																<form class="form-horizontal" role="form" method="POST" action="{{ url('/home/group/'.$grupo->id.'/tarefas/update') }}">
+																    {{ csrf_field() }}
+																	<input type="hidden" name="idGroup" value="<?php echo $grupo->id;?>">
+																	<input type="hidden" name="idTarefa" value="<?php echo $post->id;?>">
+																	<input type="hidden" name="idUser" value="{{ Auth::guard('user')->user()->id }}">
+																	 <div class="form-group">
+															        	<label for="name" class="col-md-4 control-label">Titulo</label>
+
+																        <div class="col-md-6">         
+													          		 		<input type="text" name="titulo" id="titulo" value="<?php echo $post->titulo;?>">
+																        </div>
+																    </div>
+																	<div class="form-group">
+																    	<label for="name" class="col-md-4 control-label">Mensagem</label>
+																        <div class="col-md-6">         
+																		 		<textarea name="mensagem" id="mensagem" cols="30" rows="6"><?php echo $post->mensagem;?></textarea>
+																        </div>
+																    </div>
+																    <div class="form-group">
+																        <label for="name" class="col-md-4 control-label">Porcentagem</label>
+																        <div class="col-md-6"> 
+																    	 	<input name="porcentagem" id="porcentagem" type="number" min="0" max="100" step="0.01" value="<?php echo $post->porcentagem;?>">
+																    	</div>
+																    </div>
+																    
+																    <div class="form-group" class="col-md-4 control-label">
+																		<div class="col-md-6"> 
+																			<label for="name" class="col-md-4 control-label"></label>
+																			<button type="submit" class="btn btn-success">
+																				Atualizar post
+																			</button>
+																		</div>
+																	</div>
+																</form>
+																    
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+															</div>
+														</div>
+													</div>
+												</div>
+
+
+												<div class="modal fade" id="ModalDeletePost<?php echo $post->id; ?>" role="dialog">
+												    <div class="modal-dialog modal-sm">
+												    
+												      <!-- Modal content-->
+												      <div class="modal-content">
+												        <div class="modal-header">
+												          <button type="button" class="close" data-dismiss="modal">&times;</button>
+												          <h4 class="modal-title">Excluir Atividade do Grupo</h4>
+												        </div>
+												        <div class="modal-body">
+												          <p>Tem certeza que deseja excluir essa atividade? (Essa ação não é reversível)</p>
+												        </div>
+												        <div class="modal-footer">
+												        	<div class="pull-left">
+													           <form class="form-horizontal" role="form" method="POST" action="{{ url('/home/group/'.$grupo->id.'/tarefas/delete') }}">
+																    {{ csrf_field() }}
+																    <input type="hidden" name="idGrupo" value="<?php echo $grupo->id;?>">
+													          		 <input type="hidden" name="idPost" value="<?php echo $post->id;?>">
+
+
+
+													          		 <button type="submit" class="btn btn-danger">
+														                Excluir
+														            </button>
+													          </form>
+													         </div>
+												          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+
+												        </div>
+												      </div>
+												      
+												    </div>
+												  </div>
 		                                         @endif
                                             </td>
                                             </tr> 
@@ -128,6 +244,9 @@
 
 @endsection
 
+
+
+
 <div class="modal fade" id="ModalinsertPost" role="dialog">
     <div class="modal-dialog">
     
@@ -142,6 +261,14 @@
 				    {{ csrf_field() }}
 	          		 <input type="hidden" name="idGroup" value="<?php echo $grupo->id;?>">
 	          		 <input type="hidden" name="idUser" value="{{ Auth::guard('user')->user()->id }}">
+
+	          		 <div class="form-group">
+			        	<label for="name" class="col-md-4 control-label">Titulo</label>
+
+				        <div class="col-md-6">         
+	          		 		{{ Form::text('titulo')}}
+				        </div>
+				    </div>
 	          		 
 	          		<div class="form-group">
 			        	<label for="name" class="col-md-4 control-label">Mensagem</label>
@@ -190,19 +317,7 @@
 				    {{ csrf_field() }}
 	          		 <input type="hidden" name="idGroup" value="<?php echo $grupo->id;?>">
 
-	          		 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-			        <label for="name" class="col-md-4 control-label">Name</label>
-
-				        <div class="col-md-6">
-				            <input id="name" type="text" class="form-control" name="name" value="<?php echo $grupo->name;?>" required autofocus>
-
-				            @if ($errors->has('name'))
-				                <span class="help-block">
-				                    <strong>{{ $errors->first('name') }}</strong>
-				                </span>
-				            @endif
-				        </div>
-				    </div>
+	          		
 
 
 	          		 <button type="submit" class="btn btn-danger">
