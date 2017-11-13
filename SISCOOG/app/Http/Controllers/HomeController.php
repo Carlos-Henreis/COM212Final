@@ -59,7 +59,8 @@ class HomeController extends Controller
         $grupo->delete();
         $user = Auth::guard('user')->user();
         $grupos = $this->myGroups($user->id);
-        return view('home', compact('grupos'));
+        $removidoG = true;
+        return view('home', compact('grupos', 'removidoG'));
     }
 
     public function CreateGroups (Request $request) {
@@ -76,6 +77,7 @@ class HomeController extends Controller
 
     public function ShowGroup ($idGrupo) {
         $grupo = Grupo::find($idGrupo);
+        $delegado = array();
         $participantes = DB::table('users')
                           ->join('participas','participas.idUsuario','=','users.id')   
                           ->where('participas.idGrupo', '=',$idGrupo)                                    
@@ -138,8 +140,6 @@ class HomeController extends Controller
         }
         
     }
-
-
 
     public function dataAjax(Request $request){
         $data = [];
@@ -216,6 +216,26 @@ class HomeController extends Controller
     }
 
 
+     public function autoremoveMember (Request $request) {
+        $Participas = DB::table('participas')
+                          ->where([
+                                ['idGrupo', '=',$request->idGrupo],
+                                ['idUsuario', '=', $request->idParicipante]
+                            ])                                    
+                          ->delete();
+        $Participas = DB::table('tarefas')
+                          ->where([
+                                ['idGrupo', '=',$request->idGrupo],
+                                ['idUsuario', '=', $request->idParicipante]
+                            ])                                    
+                          ->delete();
+        $okAutoDelete = true; 
+        $user = Auth::guard('user')->user(); 
+        $grupos = $this->myGroups ($user->id);
+        return view ('home', compact('okAutoDelete', 'grupos'));
+    }
+
+
 
     public function insertPost (Request $request) {
       
@@ -282,6 +302,10 @@ class HomeController extends Controller
                           ->avg('porcentagem');
         $okTarefaDel = true;
         return view('grupo.home', compact('okTarefaDel', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
+    }
+
+    public function atribuiPost (Request $request) {
+      dd($request);
     }
 }
  

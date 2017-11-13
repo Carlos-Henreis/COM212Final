@@ -8,7 +8,7 @@
                 <div class="panel-heading">Grupo - <?php echo $grupo->name;?></div>
                 <div class="panel-body">
                 	<span>
-                		<p>Porcentagem das atividades concluidas
+                		<p>Porcentagem de conclussão de todas as atividades (<?php echo $porcentagemTotal; ?>%)
                 		<div id="progress" class="progress">
                 			
 					        <div class="progress-bar progress-bar-success" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:{{ $porcentagemTotal }}%">{{ $porcentagemTotal }}%</div>
@@ -105,19 +105,22 @@
 									    </button>
 			                		</a>
 			                	</div>
+			                	<br><br><br><br>
 			                	<table class="table table-hover">
                                     <tbody> 
                                     	
                                         @foreach ($posts as $post)
                                             <tr>
                                             <td><?php
-                                    		  	echo '('.mb_strimwidth($post->created_at, 0, 10).') <strong>'.$post->name.'</strong> postou uma nova tarefa:<p>Titulo: <strong>'.$post->titulo.'</strong></p><p><strong>Descrição:</strong></p><p>'.$post->mensagem;?></p><br>
+                                    		  	echo '('.mb_strimwidth($post->created_at, 0, 10).') <strong>'.$post->name.'</strong>('.$post->email.') postou uma nova tarefa:<p>Titulo: <strong>'.$post->titulo.'</strong></p><p><strong>Descrição:</strong></p><p>'.$post->mensagem;?></p><br>
                                             	<?php 
 
-                                            		echo '
+                                            		echo '<div class="pull-left">
+															'.$post->porcentagem.'% concluida
+															</div>
                                             			  <div class="pull-right">
-															Última atualização<span class="glyphicon glyphicon-refresh"></span>: '.$post->updated_at.'
-															</div><br<br><br>
+															Última atualização  <span class="glyphicon glyphicon-refresh"></span> : '.$post->updated_at.'
+															</div><br>
                                             			  <span>
 									                		<div id="progress" class="progress">
 									                			
@@ -129,6 +132,7 @@
                                             <td>
                                         	 	@if ($post->email == Auth::guard('user')->user()->email)
 
+
 													<a href="#" data-toggle="tooltip" data-placement="bottom" title="Atualizar post">
 														<button type="button" class="btn btn-success" data-toggle="modal" data-target="#ModalUpdatePost<?php echo $post->id; ?>">
 													      <span class="glyphicon glyphicon-pencil"></span> Atualizar
@@ -139,7 +143,14 @@
 														<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalDeletePost<?php echo $post->id; ?>">
 													      <span class="glyphicon glyphicon-trash"></span> Remover
 													    </button>
+													</a><p></p>
+													<a href="#" data-toggle="tooltip" data-placement="bottom" title="Atribuír essa tarefa">
+														<button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalAtribuiPost<?php echo $post->id; ?>">
+													      <span class="glyphicon glyphicon-user"></span> 
+													      Atribuír&nbsp;&nbsp;
+													    </button>
 													</a>
+													<p></p>
 		                                         	
 												<div class="modal fade" id="ModalUpdatePost<?php echo $post->id; ?>" role="dialog">
 												    <div class="modal-dialog">
@@ -175,6 +186,52 @@
 																    	 	<input name="porcentagem" id="porcentagem" type="number" min="0" max="100" step="0.01" value="<?php echo $post->porcentagem;?>">
 																    	</div>
 																    </div>
+																    
+																    <div class="form-group" class="col-md-4 control-label">
+																		<div class="col-md-6"> 
+																			<label for="name" class="col-md-4 control-label"></label>
+																			<button type="submit" class="btn btn-success">
+																				Atualizar post
+																			</button>
+																		</div>
+																	</div>
+																</form>
+																    
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+															</div>
+														</div>
+													</div>
+												</div>
+
+
+												<div class="modal fade" id="ModalAtribuiPost<?php echo $post->id; ?>" role="dialog">
+												    <div class="modal-dialog">
+												    
+														<!-- Modal content-->
+														<div class="modal-content">
+															<div class="modal-header">
+																<button type="button" class="close" data-dismiss="modal">&times;</button>
+																<h4 class="modal-title">Atribuir essa Tarefa <?php echo $post->id; ?></h4>
+															</div>
+															<div class="modal-body">
+																<form class="form-horizontal" role="form" method="POST" action="{{ url('/home/group/'.$grupo->id.'/tarefas/atribuir') }}">
+																    {{ csrf_field() }}
+																	<input type="hidden" name="idGroup" value="<?php echo $grupo->id;?>">
+																	<input type="hidden" name="idTarefa" value="<?php echo $post->id;?>">
+																	<input type="hidden" name="idUser" value="{{ Auth::guard('user')->user()->id }}">
+																	 <div class="form-group">
+															        	<label for="name" class="col-md-4 control-label">Paticipantes</label>
+
+																      <select name="delegados[]" class="selectpicker" data-live-search="true" multiple>
+																      	@foreach ($participantes as $p)
+																		  <option>{{ $p->email }}</option>
+																		@endforeach
+																		</select>
+
+																    </div>
+
 																    
 																    <div class="form-group" class="col-md-4 control-label">
 																		<div class="col-md-6"> 
@@ -256,6 +313,7 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Criar um novo post</h4>
         </div>
+        <br>
         <div class="modal-body">
 		     <form class="form-horizontal" role="form" method="POST" action="{{ url('/home/group/'.$grupo->id.'/tarefas/insert') }}">
 				    {{ csrf_field() }}
