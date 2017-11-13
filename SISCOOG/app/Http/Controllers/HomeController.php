@@ -80,11 +80,12 @@ class HomeController extends Controller
         $delegado = array();
         $participantes = DB::table('users')
                           ->join('participas','participas.idUsuario','=','users.id')   
-                          ->where('participas.idGrupo', '=',$idGrupo)                                    
+                          ->where('participas.idGrupo', '=',$idGrupo)                                   
                           ->get();
          $posts = DB::table('users')
-                          ->join('tarefas','tarefas.idUsuario','=','users.id')   
-                          ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                          ->join('tarefas','tarefas.idUsuario','=','users.id')
+                          ->where('tarefas.idGrupo', '=',$idGrupo)  
+                           ->orderBy('tarefas.created_at', 'desc')                                 
                           ->get();
         $porcentagemTotal = DB::table('tarefas') 
                           ->where('tarefas.idGrupo', '=',$idGrupo)                                    
@@ -255,11 +256,7 @@ class HomeController extends Controller
                         ->where('tarefas.idGrupo', '=',$idGrupo)                                    
                         ->avg('porcentagem');
       $okinsertPost = true;
-      return view('grupo.home', compact('grupo', 'participantes', 'posts', 'porcentagemTotal', 'okinsertPost'));
-
-
-
-      self::ShowGroup($request->idGroup);
+      return view('grupo.home', compact('okinsertPost', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
     }
 
 

@@ -1,5 +1,10 @@
 @extends('layouts.app')
-
+<?php
+if (isset($request)){	
+	unset($request->mensagem);
+	unset($request->titulo);
+}
+?>
 @section('content')
 <div class="container">
     <div class="row">
