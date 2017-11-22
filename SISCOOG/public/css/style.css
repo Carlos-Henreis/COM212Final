@@ -285,3 +285,7 @@ input {
     border-bottom-right-radius: 3px !important;
     box-sizing: border-box !important; 
   }
+  
+  .nopadding{
+	  padding: 0px;
+  }

@@ -68,7 +68,7 @@ if (isset($request)){
 
                     @endif
 
-	                <div class="col-md-3 col-md-offset-0">	
+	                <div class="col-md-3 col-md-offset-0 nopadding">	
 	                	<div class="panel panel-default">
 	                		
 			                <div class="panel-body">
@@ -192,18 +192,13 @@ if (isset($request)){
 																    	</div>
 																    </div>
 																    
-																    <div class="form-group" class="col-md-4 control-label">
-																		<div class="col-md-6"> 
-																			<label for="name" class="col-md-4 control-label"></label>
-																			<button type="submit" class="btn btn-success">
-																				Atualizar post
-																			</button>
-																		</div>
-																	</div>
-																</form>
 																    
 															</div>
 															<div class="modal-footer">
+																			<button type="submit" class="btn btn-success">
+																				Atualizar post
+																			</button>
+																</form>
 																<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 															</div>
 														</div>
@@ -236,20 +231,12 @@ if (isset($request)){
 																		</select>
 
 																    </div>
-
-																    
-																    <div class="form-group" class="col-md-4 control-label">
-																		<div class="col-md-6"> 
-																			<label for="name" class="col-md-4 control-label"></label>
-																			<button type="submit" class="btn btn-success">
-																				Atualizar post
-																			</button>
-																		</div>
-																	</div>
-																</form>
 																    
 															</div>
-															<div class="modal-footer">
+															<div class="modal-footer"><button type="submit" class="btn btn-success">
+																				Atualizar post
+																			</button>
+																</form>
 																<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 															</div>
 														</div>
@@ -278,11 +265,11 @@ if (isset($request)){
 
 
 
-													          		 <button type="submit" class="btn btn-danger">
-														                Excluir
-														            </button>
-													          </form>
 													         </div>
+											          		 <button type="submit" class="btn btn-danger">
+												                Excluir
+												            </button>
+													          </form>
 												          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 
 												        </div>
@@ -340,18 +327,11 @@ if (isset($request)){
 	          		 		{{ Form::textarea('mensagem', null, ['size' => '30x3']) }}
 				        </div>
 				    </div>
-				    <div class="form-group" class="col-md-4 control-label">
-				    	 <div class="col-md-6"> 
-				    	 	<label for="name" class="col-md-4 control-label"></label>
-			          		 <button type="submit" class="btn btn-success">
-				                Adicionar post
-				            </button>
-				        </div>
-			         </div>
-	          </form>
+	         
 				    
         </div>
         <div class="modal-footer">
+        	<button type="submit" class="btn btn-success">Adicionar post</button> </form>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 
         </div>
@@ -379,15 +359,9 @@ if (isset($request)){
 	           <form class="form-horizontal" role="form" method="POST" action="{{ url('/home/group/delete') }}">
 				    {{ csrf_field() }}
 	          		 <input type="hidden" name="idGroup" value="<?php echo $grupo->id;?>">
-
-	          		
-
-
-	          		 <button type="submit" class="btn btn-danger">
-		                Excluir
-		            </button>
-	          </form>
+	          
 	         </div>
+	      <button type="submit" class="btn btn-danger">Excluir</button></form>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 
         </div>
@@ -429,7 +403,7 @@ if (isset($request)){
 			    <div class="form-group">
 			        <div class="col-md-6 col-md-offset-4">
 			            <button type="submit" class="btn btn-primary">
-			                Register
+			                Registrar
 			            </button>
 			        </div>
 			    </div>
