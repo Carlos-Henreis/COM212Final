@@ -13,7 +13,7 @@
                         @if ($okDelete)
                             <div class="alert alert-success alert-dismissable">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                                <strong>Success!</strong> Participante não faz mais parte do Grupo.
+                                <strong>Success!</strong> Participante não faz mais parte do Grupo. Todas as suas atividades também foram removidas.
                             </div>
                         @else
                               <div class="alert alert-danger alert-dismissable fade in">
@@ -83,33 +83,57 @@
                                               <form>
                                                 <div class='form-group'>
                                                   <div class='col-md-6 col-md-offset-4'>
-                                                      <button type="button" class="btn-sm btn-danger" disabled="disabled">
-                                                          Remover
-                                                        </button>
+                                                     <a href="#" data-toggle="tooltip" data-placement="bottom" title="Criar post">
+                                                      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalErroRemove">
+                                                        Remover
+                                                      </button>
+                                                    </a>
                                                   </div>
                                                 </div>
                                               </form>
                                             </td>
                                             </tr> 
                                           @else
-                                            <tr>
-                                                <td> {{ $participa->idUsuario }}</td>
-                                                <td>{{ $participa->email }}</td>
-                                                <td>
-                                                 <form class="form-horizontal" role="form" method="POST" action="{{ url('/home/group/'.$grupo->id.'/Participantes/remove') }}">
-                                                    {{ csrf_field() }}
-                                                    <input type="hidden" name= "idParicipante" value="{{ $participa->idUsuario }}">
-                                                     <input type="hidden" name= "idGrupo" value="{{ $grupo->id }}">
-                                                    <div class='form-group'>
-                                                        <div class='col-md-6 col-md-offset-4'>
-                                                            <button type='submit' class='btn-sm btn-danger'>
-                                                                Remover
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                  </form>
-                                                </td>
-                                            </tr>
+                                            @if ($participa->idUsuario == Auth::guard('user')->user()->id)
+                                                <tr>
+                                                  <td> {{ $participa->idUsuario }}</td>
+                                                  <td>{{ $participa->email }}</td>
+                                                  <td>
+                                                   <form class="form-horizontal" role="form" method="POST" action="{{ url('/home/group/'.$grupo->id.'/Participantes/autoremove') }}">
+                                                      {{ csrf_field() }}
+                                                      <input type="hidden" name= "idParicipante" value="{{ $participa->idUsuario }}">
+                                                       <input type="hidden" name= "idGrupo" value="{{ $grupo->id }}">
+                                                      <div class='form-group'>
+                                                          <div class='col-md-6 col-md-offset-4'>
+                                                              <button type='submit' class='btn-sm btn-danger'>
+                                                                  Sair
+                                                              </button>
+                                                          </div>
+                                                      </div>
+                                                    </form>
+                                                  </td>
+                                              </tr>
+
+                                            @else
+                                              <tr>
+                                                  <td> {{ $participa->idUsuario }}</td>
+                                                  <td>{{ $participa->email }}</td>
+                                                  <td>
+                                                   <form class="form-horizontal" role="form" method="POST" action="{{ url('/home/group/'.$grupo->id.'/Participantes/remove') }}">
+                                                      {{ csrf_field() }}
+                                                      <input type="hidden" name= "idParicipante" value="{{ $participa->idUsuario }}">
+                                                       <input type="hidden" name= "idGrupo" value="{{ $grupo->id }}">
+                                                      <div class='form-group'>
+                                                          <div class='col-md-6 col-md-offset-4'>
+                                                              <button type='submit' class='btn-sm btn-danger'>
+                                                                  Remover
+                                                              </button>
+                                                          </div>
+                                                      </div>
+                                                    </form>
+                                                  </td>
+                                              </tr>
+                                            @endif
                                           @endif
                                           <?php $i += 1; ?>
                                         @endforeach
@@ -162,3 +186,23 @@
 </div>
 
 @endsection
+<div class="modal fade" id="ModalErroRemove" role="dialog">
+    <div class="modal-dialog modal-sm">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Erro ao remover o usuário</h4>
+        </div>
+        <div class="modal-body">
+          <p>Esse usuário não pode ser removido, precisamos de pelo menos um participante para que o grupo faça sentido (se não vai usar o grupo você pode excluí-lo)</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+
+        </div>
+      </div>
+      
+    </div>
+  </div>

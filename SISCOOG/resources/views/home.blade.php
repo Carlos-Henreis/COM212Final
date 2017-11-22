@@ -39,6 +39,18 @@
                         @endif
                         
                     @endif
+                    @if (isset($okAutoDelete))
+                      <div class="alert alert-warning alert-dismissable fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Atenção!</strong> você saiu de um grupo de trabalho! Agora você não tem mais acesso aos dados (Tarefas, status, participantes e arquivos) do grupo. E tudo o que você fez não está mais disponível 
+                      </div>
+                    @endif
+                    @if (isset($removidoG))
+                      <div class="alert alert-warning alert-dismissable fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Atenção!</strong> você removeu um grupo de trabalho! Todos os seus dados (Tarefas, status, participantes e arquivos foram perdidos). 
+                      </div>
+                    @endif
                     <div class="panel panel-default">
                       <div class="container">
                           <div class="panel-heading">
