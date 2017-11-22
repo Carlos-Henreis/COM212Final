@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>SISCOOG</title>
-    <script src="{{ url('/') }}/js/jquery.json"></script>
-    <link href="{{ url('/') }}/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="{{ url('/') }}/css/select2.min.css" rel="stylesheet" />
-    <script src="{{ url('/') }}/js/select2.min.js"></script>
-    <link rel="stylesheet" href="{{ url('/') }}/css/bootstrap-select.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
 
     <script type="text/javascript">
         $('.itemName').select2({
@@ -38,6 +38,7 @@
     <link href="{{ url('/') }}/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
     <!-- Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
 
