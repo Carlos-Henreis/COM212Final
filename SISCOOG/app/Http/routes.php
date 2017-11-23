@@ -41,6 +41,8 @@ Route::group(['middleware' => ['web']], function(){
 
     Route::post('/home/group/{id}/tarefas/insert', 'HomeController@insertPost');
     Route::post('/home/group/{id}/tarefas/update', 'HomeController@updatePost');
+    Route::post('/home/group/{id}/tarefas/updatePorcent', 'HomeController@updatePorcent');
+    
     Route::post('/home/group/{id}/tarefas/delete', 'HomeController@removePost');
     Route::post('/home/group/{id}/tarefas/atribuir', 'HomeController@atribuiPost');
 

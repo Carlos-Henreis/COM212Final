@@ -10,6 +10,8 @@ use App\User;
 use App\Grupo;
 use App\Participa;
 use App\Tarefa;
+use App\Delega;
+use Exception;
 Use input;
 
 class HomeController extends Controller
@@ -77,20 +79,41 @@ class HomeController extends Controller
 
     public function ShowGroup ($idGrupo) {
         $grupo = Grupo::find($idGrupo);
-        $delegado = array();
+        $delegados = array();
         $participantes = DB::table('users')
                           ->join('participas','participas.idUsuario','=','users.id')   
-                          ->where('participas.idGrupo', '=',$idGrupo)                                   
+                          ->where('participas.idGrupo', '=',$idGrupo)    
                           ->get();
          $posts = DB::table('users')
                           ->join('tarefas','tarefas.idUsuario','=','users.id')
                           ->where('tarefas.idGrupo', '=',$idGrupo)  
-                           ->orderBy('tarefas.created_at', 'desc')                                 
+                           ->orderBy('tarefas.created_at', 'desc')           
                           ->get();
+        foreach ($posts as $post) {
+            $delegado = DB::table('users')
+                          ->join('delegas','delegas.idUsuario','=','users.id')
+                          ->where([
+                                ['idGrupo', '=',$idGrupo],
+                                ['idTarefa', '=', $post->id]
+                            ])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+            array_push($delegados, $delegado);
+            
+        }
+        $user = Auth::guard('user')->user();
+        
         $porcentagemTotal = DB::table('tarefas') 
-                          ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                          ->where('tarefas.idGrupo', '=',$idGrupo)      
                           ->avg('porcentagem');
-        return view('grupo.home', compact('grupo', 'participantes', 'posts', 'porcentagemTotal'));
+        $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                                   ['delegas.idUsuario', '=', $user->id],])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+
+        return view('grupo.home', compact('minhasTarefas', 'grupo', 'delegados','participantes', 'posts', 'porcentagemTotal'));
     }
 
     public function ShowMember ($idGrupo) {
@@ -99,8 +122,15 @@ class HomeController extends Controller
                           ->join('participas','participas.idUsuario','=','users.id')   
                           ->where('participas.idGrupo', '=',$idGrupo)                                    
                           ->get();
+        $user = Auth::guard('user')->user();
+        $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                                   ['delegas.idUsuario', '=', $user->id],])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
        
-        return view ('grupo.participantes', compact('participantes', 'grupo'));
+        return view ('grupo.participantes', compact('minhasTarefas', 'participantes', 'grupo'));
     }
 
     public function updateNome(Request $request) {
@@ -122,7 +152,26 @@ class HomeController extends Controller
             $porcentagemTotal = DB::table('tarefas') 
                               ->where('tarefas.idGrupo', '=',$idGrupo)                                    
                               ->avg('porcentagem');
-            return view('grupo.home', compact('okNome', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
+            $delegados = array();
+            foreach ($posts as $post) {
+                $delegado = DB::table('users')
+                              ->join('delegas','delegas.idUsuario','=','users.id')
+                              ->where([
+                                    ['idGrupo', '=',$idGrupo],
+                                    ['idTarefa', '=', $post->id]
+                                ])  
+                               ->orderBy('delegas.created_at', 'desc')           
+                              ->get();
+                array_push($delegados, $delegado);
+            }
+            $user = Auth::guard('user')->user();
+            $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                                   ['delegas.idUsuario', '=', $user->id],])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+            return view('grupo.home', compact('minhasTarefas', 'delegados', 'okNome', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
         } catch (\Illuminate\Database\QueryException $e) {
             $okNome = false;
             $grupo = Grupo::find($request->idGrupo);
@@ -137,7 +186,26 @@ class HomeController extends Controller
             $porcentagemTotal = DB::table('tarefas') 
                               ->where('tarefas.idGrupo', '=',$idGrupo)                                    
                               ->avg('porcentagem');
-            return view('grupo.home', compact('okNome', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
+            $delegados = array();
+            foreach ($posts as $post) {
+                $delegado = DB::table('users')
+                              ->join('delegas','delegas.idUsuario','=','users.id')
+                              ->where([
+                                    ['idGrupo', '=',$idGrupo],
+                                    ['idTarefa', '=', $post->id]
+                                ])  
+                               ->orderBy('delegas.created_at', 'desc')           
+                              ->get();
+                array_push($delegados, $delegado);
+            }
+            $user = Auth::guard('user')->user();
+            $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                                   ['delegas.idUsuario', '=', $user->id],])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+            return view('minhasTarefas', 'grupo.home', compact('delegados', 'okNome', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
         }
         
     }
@@ -172,7 +240,14 @@ class HomeController extends Controller
                               ->join('participas','participas.idUsuario','=','users.id')   
                               ->where('participas.idGrupo', '=',$request->idGroup)                                    
                               ->get();
-                return view ('grupo.participantes', compact('ok', 'grupo', 'participantes'));
+                $user = Auth::guard('user')->user();
+                $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                                   ['delegas.idUsuario', '=', $user->id],])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+                return view ('minhasTarefas', 'grupo.participantes', compact('ok', 'grupo', 'participantes'));
             }
             Participa::create($inputP);
             $grupo = Grupo::find($request->idGroup);
@@ -181,7 +256,14 @@ class HomeController extends Controller
                           ->where('participas.idGrupo', '=',$request->idGroup)                                    
                           ->get();
             $ok = true;
-            return view ('grupo.participantes', compact('ok', 'grupo', 'participantes'));
+            $user = Auth::guard('user')->user();
+            $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                                   ['delegas.idUsuario', '=', $user->id],])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+            return view ('minhasTarefas', 'grupo.participantes', compact('ok', 'grupo', 'participantes'));
         } catch (\Illuminate\Database\QueryException $e) {
             $okNome = false;
             $grupo = Grupo::find($request->idGroup);
@@ -189,13 +271,26 @@ class HomeController extends Controller
                           ->join('participas','participas.idUsuario','=','users.id')   
                           ->where('participas.idGrupo', '=',$request->idGroup)                                    
                           ->get();
-            return view ('grupo.participantes', compact('ok', 'e', 'grupo', 'participantes'));
+            $user = Auth::guard('user')->user();
+            $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                                   ['delegas.idUsuario', '=', $user->id],])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+            return view ('minhasTarefas','grupo.participantes', compact('ok', 'e', 'grupo', 'participantes'));
         }
     }
 
 
     public function removeMember (Request $request) {
         $Participas = DB::table('participas')
+                          ->where([
+                                ['idGrupo', '=',$request->idGrupo],
+                                ['idUsuario', '=', $request->idParicipante]
+                            ])                                    
+                          ->delete();
+        $delegas = DB::table('delegas')
                           ->where([
                                 ['idGrupo', '=',$request->idGrupo],
                                 ['idUsuario', '=', $request->idParicipante]
@@ -213,7 +308,14 @@ class HomeController extends Controller
                       ->join('participas','participas.idUsuario','=','users.id')   
                       ->where('participas.idGrupo', '=',$request->idGrupo)                                    
                       ->get();
-        return view ('grupo.participantes', compact('okDelete', 'e', 'grupo', 'participantes'));
+        $user = Auth::guard('user')->user();
+        $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                                   ['delegas.idUsuario', '=', $user->id],])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+        return view ('minhasTarefas', 'grupo.participantes', compact('okDelete', 'e', 'grupo', 'participantes'));
     }
 
 
@@ -256,7 +358,26 @@ class HomeController extends Controller
                         ->where('tarefas.idGrupo', '=',$idGrupo)                                    
                         ->avg('porcentagem');
       $okinsertPost = true;
-      return view('grupo.home', compact('okinsertPost', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
+      $delegados = array();
+            foreach ($posts as $post) {
+                $delegado = DB::table('users')
+                              ->join('delegas','delegas.idUsuario','=','users.id')
+                              ->where([
+                                    ['idGrupo', '=',$idGrupo],
+                                    ['idTarefa', '=', $post->id]
+                                ])  
+                               ->orderBy('delegas.created_at', 'desc')           
+                              ->get();
+                array_push($delegados, $delegado);
+            }
+      $user = Auth::guard('user')->user();
+      $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                                   ['delegas.idUsuario', '=', $user->id],])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+      return view('grupo.home', compact('minhasTarefas', 'delegados', 'okinsertPost', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
     }
 
 
@@ -276,7 +397,68 @@ class HomeController extends Controller
                           ->where('tarefas.idGrupo', '=',$idGrupo)                                    
                           ->avg('porcentagem');
         $okTarefaUp = true;
-        return view('grupo.home', compact('okTarefaUp', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
+        $delegados = array();
+            foreach ($posts as $post) {
+                $delegado = DB::table('users')
+                              ->join('delegas','delegas.idUsuario','=','users.id')
+                              ->where([
+                                    ['idGrupo', '=',$idGrupo],
+                                    ['idTarefa', '=', $post->id]
+                                ])  
+                               ->orderBy('delegas.created_at', 'desc')           
+                              ->get();
+                array_push($delegados, $delegado);
+            }
+          $user = Auth::guard('user')->user();
+          $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                                   ['delegas.idUsuario', '=', $user->id],])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+        return view('grupo.home', compact('minhasTarefas', 'delegados', 'okTarefaUp', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
+        
+    }
+
+    
+    public function updatePorcent (Request $request) {
+      $t = Tarefa::find($request->idTarefa)->update(['porcentagem' => $request->porcentagem]);
+      $idGrupo = $request->idGroup; 
+       $grupo = Grupo::find($idGrupo);
+        $delegados = array();
+        $participantes = DB::table('users')
+                          ->join('participas','participas.idUsuario','=','users.id')   
+                          ->where('participas.idGrupo', '=',$idGrupo)    
+                          ->get();
+         $posts = DB::table('users')
+                          ->join('tarefas','tarefas.idUsuario','=','users.id')
+                          ->where('tarefas.idGrupo', '=',$idGrupo)  
+                           ->orderBy('tarefas.created_at', 'desc')           
+                          ->get();
+        foreach ($posts as $post) {
+            $delegado = DB::table('users')
+                          ->join('delegas','delegas.idUsuario','=','users.id')
+                          ->where([
+                                ['idGrupo', '=',$idGrupo],
+                                ['idTarefa', '=', $post->id]
+                            ])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+            array_push($delegados, $delegado);
+        }
+        $porcentagemTotal = DB::table('tarefas') 
+                          ->where('tarefas.idGrupo', '=',$idGrupo)      
+                          ->avg('porcentagem');
+        
+        $okTarefaUp = true;
+        $user = Auth::guard('user')->user();
+        $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where('tarefas.idGrupo', '=',$idGrupo)  
+                           ->orderBy('tarefas.created_at', 'desc')           
+                          ->get();
+
+        return view('grupo.home', compact('minhasTarefas','okTarefaUp','grupo', 'delegados','participantes', 'posts', 'porcentagemTotal'));
         
     }
 
@@ -286,6 +468,7 @@ class HomeController extends Controller
       $tarefa->delete();
       $idGrupo = $request->idGrupo;
       $grupo = Grupo::find($idGrupo);
+      $delegados = array();
       $participantes = DB::table('users')
                           ->join('participas','participas.idUsuario','=','users.id')   
                           ->where('participas.idGrupo', '=',$idGrupo)                                    
@@ -297,12 +480,125 @@ class HomeController extends Controller
         $porcentagemTotal = DB::table('tarefas') 
                           ->where('tarefas.idGrupo', '=',$idGrupo)                                    
                           ->avg('porcentagem');
+        foreach ($posts as $post) {
+          $delegado = DB::table('users')
+                        ->join('delegas','delegas.idUsuario','=','users.id')
+                        ->where([
+                              ['idGrupo', '=',$idGrupo],
+                              ['idTarefa', '=', $post->id]
+                          ])  
+                         ->orderBy('delegas.created_at', 'desc')           
+                        ->get();
+          array_push($delegados, $delegado);
+      }
         $okTarefaDel = true;
-        return view('grupo.home', compact('okTarefaDel', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
+        $user = Auth::guard('user')->user();
+        $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                                   ['delegas.idUsuario', '=', $user->id],])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+        return view('grupo.home', compact('minhasTarefas', 'okTarefaDel', 'delegados', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
+    }
+
+    public function jaDelegado ($idGroup, $idTarefa, $id){
+      $errado = DB::table('delegas')
+                          ->where([
+                                ['idGrupo', '=', $idGroup],
+                                ['idTarefa', '=', $idTarefa],
+                                ['idUsuario', '=', $id],
+                            ])                                    
+                          ->get();
+      if (count($errado) > 0)
+        throw new Exception('Participante já é delegado dessa tarefa.');
+      return true;
     }
 
     public function atribuiPost (Request $request) {
-      dd($request);
+       try {
+          foreach ($request->delegados as $delegado) {
+            $Participa = DB::table('users')
+                          ->where([
+                                ['email', '=',$delegado],
+                            ])                                    
+                          ->get();
+
+            $inputP = array('idGrupo' => $request->idGroup, 'idTarefa' => $request->idTarefa, 'idUsuario' => $Participa[0]->id,);
+            $this->jaDelegado($request->idGroup, $request->idTarefa, $Participa[0]->id);
+            Delega::create($inputP);
+          }
+            
+          $idGrupo = $request->idGroup;
+          $grupo = Grupo::find($idGrupo);
+          $participantes = DB::table('users')
+                            ->join('participas','participas.idUsuario','=','users.id')   
+                            ->where('participas.idGrupo', '=',$idGrupo)                                    
+                            ->get();
+           $posts = DB::table('users')
+                            ->join('tarefas','tarefas.idUsuario','=','users.id')   
+                            ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                            ->get();
+          $porcentagemTotal = DB::table('tarefas') 
+                            ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                            ->avg('porcentagem');
+          $delegados = array();
+          foreach ($posts as $post) {
+              $delegado = DB::table('users')
+                            ->join('delegas','delegas.idUsuario','=','users.id')
+                            ->where([
+                                  ['idGrupo', '=',$idGrupo],
+                                  ['idTarefa', '=', $post->id]
+                              ])  
+                             ->orderBy('delegas.created_at', 'desc')           
+                            ->get();
+              array_push($delegados, $delegado);
+          }
+          $okDelegado = true;
+          $user = Auth::guard('user')->user();
+          $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                                   ['delegas.idUsuario', '=', $user->id],])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+          return view('grupo.home', compact('minhasTarefas', 'okDelegado', 'delegados', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
+        } catch (Exception $e) {
+            $idGrupo = $request->idGroup;
+            $grupo = Grupo::find($idGrupo);
+            $participantes = DB::table('users')
+                              ->join('participas','participas.idUsuario','=','users.id')   
+                              ->where('participas.idGrupo', '=',$idGrupo)                                    
+                              ->get();
+             $posts = DB::table('users')
+                              ->join('tarefas','tarefas.idUsuario','=','users.id')   
+                              ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                              ->get();
+            $porcentagemTotal = DB::table('tarefas') 
+                              ->where('tarefas.idGrupo', '=',$idGrupo)                                    
+                              ->avg('porcentagem');
+            $delegados = array();
+            foreach ($posts as $post) {
+                $delegado = DB::table('users')
+                              ->join('delegas','delegas.idUsuario','=','users.id')
+                              ->where([
+                                    ['idGrupo', '=',$idGrupo],
+                                    ['idTarefa', '=', $post->id]
+                                ])  
+                               ->orderBy('delegas.created_at', 'desc')           
+                              ->get();
+                array_push($delegados, $delegado);
+            }
+            $okDelegado = false;
+            $user = Auth::guard('user')->user();
+            $minhasTarefas = DB::table('tarefas')
+                          ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
+                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                                   ['delegas.idUsuario', '=', $user->id],])  
+                           ->orderBy('delegas.created_at', 'desc')           
+                          ->get();
+            return view ('grupo.home', compact('minhasTarefas', 'e', 'delegados', 'okDelegado', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
+        }
     }
 }
  
