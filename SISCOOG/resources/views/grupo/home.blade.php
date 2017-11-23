@@ -501,7 +501,7 @@ for($i=0; $i < count($delegados); $i++) {
 		     		(quantidade de tarefas:{{$maior}})
 		     	</p>
 		     	<p>Total de participantes: <?php echo count($participantes); ?></p>
-		     	<p>Quantidade de tarefas concluidas: {{$concluidas}} ({{100*($concluidas/count($posts))}}%)</p>
+		     	<p>Quantidade de tarefas concluidas: <?php echo count($concluidas); ?> (<?php if (count($posts)) echo (100*($concluidas/count($posts))); ?>%)</p>
 		     	<table class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>

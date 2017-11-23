@@ -205,7 +205,7 @@ class HomeController extends Controller
                                    ['delegas.idUsuario', '=', $user->id],])  
                            ->orderBy('delegas.created_at', 'desc')           
                           ->get();
-            return view('minhasTarefas', 'grupo.home', compact('delegados', 'okNome', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
+            return view( 'grupo.home', compact('minhasTarefas','delegados', 'okNome', 'grupo', 'participantes', 'posts', 'porcentagemTotal'));
         }
         
     }
@@ -224,6 +224,7 @@ class HomeController extends Controller
     }
 
     public function insertMember (Request $request) {
+      $idGrupo = $request->idGroup;
         try {
 
             $inputP = array('idGrupo' => $request->idGroup, 'idUsuario' => $request->itemName,);
@@ -247,7 +248,7 @@ class HomeController extends Controller
                                    ['delegas.idUsuario', '=', $user->id],])  
                            ->orderBy('delegas.created_at', 'desc')           
                           ->get();
-                return view ('minhasTarefas', 'grupo.participantes', compact('ok', 'grupo', 'participantes'));
+                return view ( 'grupo.participantes', compact( 'minhasTarefas','ok', 'grupo', 'participantes'));
             }
             Participa::create($inputP);
             $grupo = Grupo::find($request->idGroup);
@@ -256,6 +257,7 @@ class HomeController extends Controller
                           ->where('participas.idGrupo', '=',$request->idGroup)                                    
                           ->get();
             $ok = true;
+
             $user = Auth::guard('user')->user();
             $minhasTarefas = DB::table('tarefas')
                           ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
@@ -263,7 +265,7 @@ class HomeController extends Controller
                                    ['delegas.idUsuario', '=', $user->id],])  
                            ->orderBy('delegas.created_at', 'desc')           
                           ->get();
-            return view ('minhasTarefas', 'grupo.participantes', compact('ok', 'grupo', 'participantes'));
+            return view ('grupo.participantes', compact('minhasTarefas', 'ok', 'grupo', 'participantes'));
         } catch (\Illuminate\Database\QueryException $e) {
             $okNome = false;
             $grupo = Grupo::find($request->idGroup);
@@ -278,7 +280,7 @@ class HomeController extends Controller
                                    ['delegas.idUsuario', '=', $user->id],])  
                            ->orderBy('delegas.created_at', 'desc')           
                           ->get();
-            return view ('minhasTarefas','grupo.participantes', compact('ok', 'e', 'grupo', 'participantes'));
+            return view ('grupo.participantes', compact('minhasTarefas','ok', 'e', 'grupo', 'participantes'));
         }
     }
 
@@ -311,11 +313,11 @@ class HomeController extends Controller
         $user = Auth::guard('user')->user();
         $minhasTarefas = DB::table('tarefas')
                           ->join('delegas','tarefas.idUsuario','=','delegas.idUsuario')
-                          ->where([['delegas.idGrupo', '=',$idGrupo],
+                          ->where([['delegas.idGrupo', '=',$request->idGrupo],
                                    ['delegas.idUsuario', '=', $user->id],])  
                            ->orderBy('delegas.created_at', 'desc')           
                           ->get();
-        return view ('minhasTarefas', 'grupo.participantes', compact('okDelete', 'e', 'grupo', 'participantes'));
+        return view ( 'grupo.participantes', compact('minhasTarefas','okDelete', 'e', 'grupo', 'participantes'));
     }
 
 
