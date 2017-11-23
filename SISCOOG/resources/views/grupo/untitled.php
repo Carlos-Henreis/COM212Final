@@ -1,15 +1,6 @@
 @extends('layouts.app')
 <?php
 header('X-XSS-Protection:0');
-$atribuidas = array();
-for($i=0; $i < count($delegados); $i++) {
-	# code...
-	for ($j=0; $j < count($delegados[$i]); $j++) { 
-		echo '
-  			<li>'.$delegados[$i][$j]->email.'</li>';
-  			array_push($atribuidas, $delegados[$i][$j]->email);
-  	}
- }
 ?>
 @section('content')
 <div class="container">
@@ -501,7 +492,7 @@ for($i=0; $i < count($delegados); $i++) {
 		     		(quantidade de tarefas:{{$maior}})
 		     	</p>
 		     	<p>Total de participantes: <?php echo count($participantes); ?></p>
-		     	<p>Quantidade de tarefas concluidas: <?php echo count($concluidas); ?> (<?php if (count($posts)) echo (100*($concluidas/count($posts))); ?>%)</p>
+		     	<p>Quantidade de tarefas concluidas: {{$concluidas}} ({{100*($concluidas/count($posts))}}%)</p>
 		     	<table class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
@@ -510,7 +501,8 @@ for($i=0; $i < count($delegados); $i++) {
                         </tr>
                     </thead>
                     <tbody id="myTable"> 
-                       
+                        
+                        <?php $i = 1; ?>
                         @foreach ($participantes as $participa)
                             <tr>
                              <td> {{ $participa->idUsuario }}</td>
@@ -523,9 +515,10 @@ for($i=0; $i < count($delegados); $i++) {
             </div>
                 <p>
                 <div id="barchart_values"></div>
-                <p>Total conc<p>
                 <div id="timeline1"></div>
-                <div id="piechart"></div>                
+                <div id="piechart"></div>
+            </p>
+                
                
 
 		     </div>
@@ -724,16 +717,13 @@ for($i=0; $i < count($delegados); $i++) {
         dataTable.addColumn({ type: 'date', id: 'Start' });
         dataTable.addColumn({ type: 'date', id: 'End' });
         dataTable.addRows([
-        <?php
-        foreach ($posts as $post) {
-        	echo "[ 'Tarefa:".$post->id."', new Date(\"".$post->created_at."\"), new Date(\"".$post->updated_at."\") ],";
-        }
-        ?>
-         ]);
+          [ 'Washington', new Date(1789, 3, 30), new Date(1797, 2, 4) ],
+          [ 'Adams',      new Date(1797, 2, 4),  new Date(1801, 2, 4) ],
+          [ 'Jefferson',  new Date(1801, 2, 4),  new Date(1809, 2, 4) ]]);
          var options = {
 	        title: "Porcentagem das tarefas",
 	        width: 820,
-	        height: 400,
+	        height: 200,
 	        bar: {groupWidth: "95%"},
 	        legend: { position: "none" },
 	      };
@@ -764,7 +754,7 @@ function cont(){
 
 
         // Optional; add a title and set the width and height of the chart
-  var options = {'title':'Procentagem Geral concluida', 'width':800, 'height':400, 'pieHole': 0.4};
+  var options = {'title':'Procentagem Geral concluida', 'width':550, 'height':400, 'pieHole': 0.4};
 
   // Display the chart inside the <div> element with id="piechart"
 
